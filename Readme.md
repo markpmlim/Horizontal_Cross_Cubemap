@@ -60,7 +60,9 @@ In order to access a cubemap texture, a 3D direction must be generated from the 
     dirToCubeUV(vec3 dir, out int faceIndex)
 ```
 
-All that remains to be done is to map the returned uv to a pixel on the 4:3 texture passed as a uniform to the fragment shader.
+All that remains to be done is to map the returned uv to a pixel on the 4:3 texture passed as a uniform to the fragment shader. After launching, the output should look like:
+
+![](ExpectedOutput.png)
 
 <br />
 <br />
