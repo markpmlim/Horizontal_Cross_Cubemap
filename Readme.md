@@ -13,7 +13,7 @@ Testing is done only for modern OpenGL 3.2 and OpenGLES 3.0.
 
 **Horizontal Cross Cubemap** 
 
-For macOS programmers, creating cubemaps from six 2D textures is straightforward using Apple's GLKit framework. There are two GLKTextureLoader class methods
+For macOS programmers, creating cubemaps from six 2D image files is straightforward using Apple's GLKit framework. There are two GLKTextureLoader class methods
 
 ```swift
     cubeMap(withContentsOfFile:, options:)
@@ -30,7 +30,7 @@ which when called will instantiate an OpenGL cubemap texture and return an insta
     glBindTexture(GLenum target, GLuint texture);
 ```
 
-where target is GL_TEXTURE_CUBE_MAP whenever the skybox needs to be drawn as part of the update process. (The class GLKTextureLoader was available for iOS 5.0 and macOS 10.8).
+where target is GL_TEXTURE_CUBE_MAP whenever the skybox needs to be drawn as part of the update process. (The class GLKTextureLoader was available for iOS 5.0 and macOS 10.8 or later).
 
 This demo will be using the GLKTextureLoader call:
 
@@ -44,23 +44,25 @@ to load a 2D image file with a resolution of 2048:1536 (ratio 4:3) for images of
     textureFromRadianceFile(const char *pathName, int *width, int *height)
 ```
 
-to load high dynamic range images and create a 2D texture.
+to load high dynamic range images and create the 2D texture.
 
-Once the 2D texture (of type GL_TEXTURE_2D) is instantiated and program setup is complete, the draw() method is called to render the 3D skybox.
+Once the 2D texture (of type GL_TEXTURE_2D) is instantiated and program setup is complete, the draw() method of OpenGLRenderer is called to render the 3D skybox.
 
-To allow the user to see the skybox, a simple camera (based on raytracing) is implemented within the fragment shader.
+To enable the skybox to be seen, a simple camera (based on raytracing) is implemented within the fragment shader.
 
-Basically, the vertex shader produces a large triangle which is clipped output a quad.
+Basically, the vertex shader produces a large triangle which is clipped to output a quad.
 
-The fragment shader receives some uniforms from the CPU side to help in the setup of a simple camera. All the user needs to do is drag the mouse (use a one-finger touch for iOS devices) to look around the insider of the skybox.
+The fragment shader receives some uniforms from the CPU side to help in the setup of a simple camera. All the user needs to do is drag the mouse (use a one-finger touch for iOS devices) to look around the inside of the skybox.
 
-In order to access a cubemap texture, a 3D direction must be generated from the mouse drags. The direction is converted into a faceIndex and a pair of uv coodinates by calling the function
+In order to access a cubemap texture, a 3D direction vector must be generated from the mouse drags. This vector is converted into a faceIndex and a pair of uv coodinates by calling the function
 
 ```glsl
     dirToCubeUV(vec3 dir, out int faceIndex)
 ```
 
-All that remains to be done is to map the returned uv to a pixel on the 4:3 texture passed as a uniform to the fragment shader. After launching, the output should look like:
+All that remains to be done is to map the returned uv to a pixel on the 4:3 texture passed as a uniform to the fragment shader. 
+
+After launching, the output should look like:
 
 ![](ExpectedOutput.png)
 
