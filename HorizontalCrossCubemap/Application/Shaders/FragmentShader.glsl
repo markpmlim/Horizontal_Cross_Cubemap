@@ -16,7 +16,7 @@ in vec2 texCoords;
 #endif
 
 uniform sampler2D image;
-uniform vec2 u_resolution;  // Canvas size (width,height) - dimensions of view port
+uniform vec2 u_resolution;  // Canvas size (width, height)
 uniform vec2 u_mouse;       // mouse position in screen pixels
 uniform float u_time;       // Time in seconds since load
 
@@ -113,14 +113,14 @@ vec2 dirToCubeUV(vec3 dir, out int faceIndex) {
 }
 
 /*
- Assume we have a 4x3 canvas consisting of 12 squares each have
-  an area of 1x1 unit squared. In other words, the entire canvas is a
-  rectangular grid of 12 squares.
+ Assume we have a 4x3 canvas consisting of 12 squares each having
+  an area of 1x1 squared unit. In other words, the entire canvas is a
+  rectangular grid of 12 squared units.
  We are only interested in 6 of those squares which make up the
   horizontal cross. We map the input uv to one of these 6 squares.
  Then we scale the resulting uv by 4x3 which can then be used to
-  access the texture which have a resolution of 4:3.
- We are are using a texture whose dimensions are 2048 by 1536
+  access the texture which has a resolution of 4:3.
+ We are using a texture with dimensions 2048 by 1536 pixels.
  (4x512 by 3x512)
  This idea can be applied to map the input uv to any 2D texture
  e.g.
@@ -150,21 +150,23 @@ vec2 mappingTo4by3(vec2 uv, int faceIndex) {
 void main(void) {
     // [0, width] & [0, height]
     vec2 fragCoord = vec2(gl_FragCoord.xy);
+    vec2 mouseUV = iMouse;
+    if (mouseUV == vec2(0.0, 0.0))
+        mouseUV = vec2(iResolution/2.0);
     // rotX
     // 1) Get mouse position between 0 and 1
     // 2) Multiply by 2pi
     // rotX varies between 0 and 2π
     // rotY varies between 0 and π
     // 0 at left side, 2π at right
-    float rotX = (iMouse.x / iResolution.x) * 2.0 * PI;
-    float rotY = (iMouse.y / iResolution.y) * PI;
+    float rotX = (mouseUV.x / iResolution.x) * 2.0 * PI;
+    float rotY = (mouseUV.y / iResolution.y) * PI;
 
     // Calculate the camera's orientation
     vec3 camO = vec3(cos(rotX), cos(rotY), sin(rotX));
 
     // The forward vector - the camera is at centre (0.0, 0.0, 0.0) of the cube.
-    //vec3 camD = normalize(vec3(0) - camO);
-    vec3 camD = normalize(camO - vec3(0));
+    vec3 camD = normalize(vec3(0) - camO);
 
     // The vec3(0, 1, 0) does not have to be perpendicular to camD.
     // The right vector is orthogonal to both camD and vec3(0, 1, 0).
@@ -187,7 +189,6 @@ void main(void) {
     uv = dirToCubeUV(dir, faceIndex);
     uv = mappingTo4by3(uv, faceIndex);
 
-    //uv = cubeToUV(dir, 1.0/512.0);
 #if __VERSION__ >= 140
     FragColor = texture(image, uv);
 #else

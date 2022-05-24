@@ -76,6 +76,8 @@ https://en.wikipedia.org/wiki/Cube_mapping
 
 https://www.shadertoy.com/view/tlyXzG
 
+https://matheowis.github.io/HDRI-to-CubeMap/
+
 
 
 
