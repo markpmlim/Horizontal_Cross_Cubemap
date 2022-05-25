@@ -48,13 +48,13 @@ to load high dynamic range images and create the 2D texture.
 
 Once the 2D texture (of type GL_TEXTURE_2D) is instantiated and program setup is complete, the draw() method of OpenGLRenderer is called to render the 3D skybox.
 
-To enable the skybox to be seen, a simple camera (based on raytracing) is implemented within the fragment shader.
+To enable the skybox to be seen, a simple camera (based on raytracing) is implemented in the fragment shader code.
 
 Basically, the vertex shader produces a large triangle which is clipped to output a quad.
 
 The fragment shader receives some uniforms from the CPU side to help in the setup of a simple camera. All the user needs to do is drag the mouse (use a one-finger touch for iOS devices) to look around the inside of the skybox.
 
-In order to access a cubemap texture, a 3D direction vector must be generated from the mouse drags. This vector is converted into a faceIndex and a pair of uv coodinates by calling the function
+In order to access a cubemap texture, a 3D direction vector must be generated from the mouse drags. This vector is converted into a face index and a pair of uv coodinates by calling the function
 
 ```glsl
     dirToCubeUV(vec3 dir, out int faceIndex)
