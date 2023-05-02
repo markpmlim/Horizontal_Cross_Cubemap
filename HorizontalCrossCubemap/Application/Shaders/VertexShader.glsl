@@ -22,7 +22,7 @@ varying vec2 texCoords;
  The origin of the uv axes starts at the bottom left corner of the
  2D NDC space with u-axis from left to right and
  v-axis from bottom to top.
- For the mathematically-inclined, the line y = -x + 3 is the hypotenuse of a
+ For the mathematically-inclined, the line y = -x + 2 is the hypotenuse of a
   right-angled triangle. The other 2 lines are x = -1.0 and y = -1.0.
  The points (3.0, -1.0) and (-1.0, 3.0) lie on the sloping line.
  The last point (-1.0, -1.0) lie on x = -1.0 and y = -1.0.
